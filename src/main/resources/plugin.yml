@@ -1,0 +1,6 @@
+name: ThingyBedwars
+version: '${project.version}'
+main: com.github.thethingyee.thingybedwars.ThingyBedwars
+api-version: '1.20'
+commands:
+  bedwars:
