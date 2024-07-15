@@ -2,14 +2,15 @@ package com.github.thethingyee.thingybedwars.managers;
 
 import com.github.thethingyee.thingybedwars.ThingyBedwars;
 import com.github.thethingyee.thingybedwars.managers.components.Arena;
+import com.github.thethingyee.thingybedwars.managers.components.Generator;
 import com.github.thethingyee.thingybedwars.managers.components.Team;
-import org.bukkit.DyeColor;
-import org.bukkit.World;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GameManager {
 
@@ -25,11 +26,24 @@ public class GameManager {
     }
 
     public boolean checkArenaNameAvailability(String name) {
-        return !(availableArenas.stream().anyMatch(arena -> arena.getName().equalsIgnoreCase(name)));
+        return availableArenas.stream().noneMatch(arena -> arena.getName().equalsIgnoreCase(name));
     }
 
     public boolean isValidTeamColor(String teamColor) {
-        return Team.TeamColor.valueOf(teamColor.toUpperCase()) != null;
+        try {
+            Team.TeamColor.valueOf(teamColor.toUpperCase());
+        } catch(IllegalArgumentException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public List<Generator> getDiamondGenerators(Arena arena) {
+        return arena.getGenerators().stream().filter(generator -> generator.getType().equals(Generator.Type.DIAMOND)).collect(Collectors.toList());
+    }
+
+    public List<Generator> getEmeraldGenerators(Arena arena) {
+        return arena.getGenerators().stream().filter(generator -> generator.getType().equals(Generator.Type.EMERALD)).collect(Collectors.toList());
     }
 
     public SetupMode getSetupMode() {
@@ -55,7 +69,7 @@ public class GameManager {
         ArrayList<Team.TeamColor> teamColorArrayList = new ArrayList<Team.TeamColor>();
 
         for (String s : teamColor) {
-            teamColorArrayList.add(Team.TeamColor.valueOf(s));
+            teamColorArrayList.add(Team.TeamColor.valueOf(s.toUpperCase()));
         }
 
         return teamColorArrayList.toArray(new Team.TeamColor[teamColor.length]);

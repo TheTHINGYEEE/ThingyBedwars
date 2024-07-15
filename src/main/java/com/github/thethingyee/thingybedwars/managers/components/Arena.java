@@ -6,6 +6,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,9 +16,8 @@ public class Arena {
     private final String name;
     private final GameMap gameMap;
     private Location lobbyLocation;
-    private final Set<Location> diamondGenerators = new HashSet<>();
-    private final Set<Location> emeraldGenerators = new HashSet<>();
-    private final Set<Team> teams = new HashSet<>();
+    private final Set<Generator> generators = new HashSet<>();
+    private final ArrayList<Team> teams = new ArrayList<>();
     private final GameManager gameManager;
 
     public Arena(String name, GameMap gameMap, GameManager gameManager) {
@@ -30,15 +30,11 @@ public class Arena {
         return gameMap;
     }
 
-    public Set<Location> getDiamondGenerators() {
-        return diamondGenerators;
+    public Set<Generator> getGenerators() {
+        return generators;
     }
 
-    public Set<Location> getEmeraldGenerators() {
-        return emeraldGenerators;
-    }
-
-    public Set<Team> getTeams() {
+    public ArrayList<Team> getTeams() {
         return teams;
     }
 
@@ -48,5 +44,13 @@ public class Arena {
 
     public String getName() {
         return name;
+    }
+
+    public Location getLobbyLocation() {
+        return lobbyLocation;
+    }
+
+    public void setLobbyLocation(Location lobbyLocation) {
+        this.lobbyLocation = lobbyLocation;
     }
 }

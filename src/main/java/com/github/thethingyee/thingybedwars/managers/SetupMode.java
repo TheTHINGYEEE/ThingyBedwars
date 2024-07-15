@@ -27,15 +27,13 @@ public class SetupMode {
 
     private File worldFolder;
 
-    // Team components
-    private ArrayList<Team> availableTeams = new ArrayList<>();
-
     public void setSetupMode(boolean setupMode) {
         this.setupMode = setupMode;
     }
 
     public Arena createArena() {
-        return (arena = new Arena(mapName, gameMap, gameManager));
+        if(arena != null) new Arena(mapName, gameMap, gameManager);
+        return arena;
     }
 
     public GameMap createGameMap(File worldFolder, String mapName, boolean loadoninit) {
@@ -46,20 +44,24 @@ public class SetupMode {
 
     public ArrayList<Team> createTeams(Team.TeamColor... teamColors) {
         for (Team.TeamColor teamColor : teamColors) {
-            availableTeams.add(new Team(null, teamColor, null));
+            arena.getTeams().add(new Team(teamColor));
         }
-        return availableTeams;
+        return arena.getTeams();
+    }
+
+    public Arena getArena() {
+        return arena;
     }
 
     public boolean onSetupMode() {
         return setupMode;
     }
 
-    public ArrayList<Team> getAvailableTeams() {
-        return availableTeams;
+    public Team getTeamByTeamColor(Team.TeamColor teamColor) {
+        return arena.getTeams().stream().filter(team -> team.getTeamColor().equals(teamColor)).findFirst().get();
     }
 
-    public Team getTeamByTeamColor(Team.TeamColor teamColor) {
-        return availableTeams.stream().filter(team -> team.getTeamColor().equals(teamColor)).findFirst().get();
+    public File getWorldFolder() {
+        return worldFolder;
     }
 }
